@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortify - YouTube Short Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Processing your video...</div>
+        <div class="loading-progress">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-video"></i>
+                    <span>Shortify</span>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-profile">
+                        <i class="fas fa-user"></i>
+                        <span>Coen-yin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main App -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Turn Any YouTube Video Into 
+                        <span class="gradient-text">Viral Shorts</span>
+                    </h1>
+                    <p class="hero-description">
+                        AI-powered tool that finds the best moments in your videos, 
+                        adds auto-captions, and creates ready-to-post YouTube Shorts.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">10K+</span>
+                            <span class="stat-label">Shorts Created</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">5M+</span>
+                            <span class="stat-label">Views Generated</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- URL Input Section -->
+            <section class="url-input-section">
+                <div class="input-card">
+                    <div class="input-header">
+                        <h2>Paste Your YouTube URL</h2>
+                        <p>We'll analyze your video and find the best clips automatically</p>
+                    </div>
+                    <form class="url-form" id="url-form">
+                        <div class="input-group">
+                            <div class="input-wrapper">
+                                <i class="fab fa-youtube input-icon"></i>
+                                <input 
+                                    type="url" 
+                                    id="youtube-url" 
+                                    placeholder="https://www.youtube.com/watch?v=..." 
+                                    required
+                                >
+                                <button type="button" class="paste-btn" id="paste-btn">
+                                    <i class="fas fa-clipboard"></i>
+                                </button>
+                            </div>
+                            <button type="submit" class="generate-btn">
+                                <i class="fas fa-magic"></i>
+                                <span>Generate Shorts</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="url-examples">
+                        <span>Try these examples:</span>
+                        <button class="example-url" data-url="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                            Music Video
+                        </button>
+                        <button class="example-url" data-url="https://www.youtube.com/watch?v=jNQXAC9IVRw">
+                            Tech Review
+                        </button>
+                        <button class="example-url" data-url="https://www.youtube.com/watch?v=9bZkp7q19f0">
+                            Tutorial
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Preview Section -->
+            <section class="video-preview" id="video-preview" style="display: none;">
+                <div class="preview-card">
+                    <div class="video-info">
+                        <div class="video-thumbnail">
+                            <img id="video-thumb" src="" alt="Video thumbnail">
+                            <div class="play-overlay">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-details">
+                            <h3 id="video-title">Video Title</h3>
+                            <p id="video-description">Video description...</p>
+                            <div class="video-meta">
+                                <span id="video-duration">0:00</span>
+                                <span id="video-views">0 views</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="processing-options">
+                        <h4>Processing Options</h4>
+                        <div class="options-grid">
+                            <div class="option-card">
+                                <input type="checkbox" id="auto-captions" checked>
+                                <label for="auto-captions">
+                                    <i class="fas fa-closed-captioning"></i>
+                                    Auto Captions
+                                </label>
+                            </div>
+                            <div class="option-card">
+                                <input type="checkbox" id="highlight-detection" checked>
+                                <label for="highlight-detection">
+                                    <i class="fas fa-star"></i>
+                                    Highlight Detection
+                                </label>
+                            </div>
+                            <div class="option-card">
+                                <input type="checkbox" id="auto-crop">
+                                <label for="auto-crop">
+                                    <i class="fas fa-crop"></i>
+                                    Auto Crop (9:16)
+                                </label>
+                            </div>
+                            <div class="option-card">
+                                <input type="checkbox" id="trending-hashtags">
+                                <label for="trending-hashtags">
+                                    <i class="fas fa-hashtag"></i>
+                                    Trending Hashtags
+                                </label>
+                            </div>
+                        </div>
+                        <button class="process-btn" id="process-btn">
+                            <i class="fas fa-cog"></i>
+                            Start Processing
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Generated Shorts Section -->
+            <section class="generated-shorts" id="generated-shorts" style="display: none;">
+                <div class="shorts-header">
+                    <h2>Generated Shorts</h2>
+                    <p>AI found <span id="shorts-count">0</span> potential viral moments</p>
+                </div>
+                <div class="shorts-grid" id="shorts-grid">
+                    <!-- Generated shorts will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features">
+                <div class="features-header">
+                    <h2>Why Choose Shortify?</h2>
+                    <p>The most advanced YouTube Short generator powered by AI</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI-Powered Analysis</h3>
+                        <p>Our advanced AI identifies the most engaging moments in your videos automatically</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-closed-captioning"></i>
+                        </div>
+                        <h3>Auto Captions</h3>
+                        <p>Generate accurate, stylized captions that increase engagement and accessibility</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Perfect Format</h3>
+                        <p>Automatically crops and formats videos for optimal YouTube Shorts viewing</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lightning-bolt"></i>
+                        </div>
+                        <h3>Lightning Fast</h3>
+                        <p>Process videos in seconds, not hours. Get your shorts ready to post instantly</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <h3>Trending Hashtags</h3>
+                        <p>Get AI-suggested hashtags to maximize your reach and discoverability</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3>Easy Download</h3>
+                        <p>Download your shorts in multiple formats ready for any social platform</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <i class="fas fa-video"></i>
+                        <span>Shortify</span>
+                    </div>
+                    <p>Turn any YouTube video into viral shorts with AI</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Product</h4>
+                        <a href="#">Features</a>
+                        <a href="#">Pricing</a>
+                        <a href="#">API</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Support</h4>
+                        <a href="#">Help Center</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Status</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Legal</h4>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                        <a href="#">DMCA</a>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <a href="https://github.com/Coen-yin" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" target="_blank">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Shortify by Coen-yin. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Short Template (Hidden) -->
+    <template id="short-template">
+        <div class="short-card">
+            <div class="short-preview">
+                <video class="short-video" controls>
+                    <source src="" type="video/mp4">
+                </video>
+                <div class="short-overlay">
+                    <div class="short-info">
+                        <span class="short-duration">0:30</span>
+                        <span class="short-score">95% Viral Score</span>
+                    </div>
+                </div>
+            </div>
+            <div class="short-details">
+                <h4 class="short-title">Highlight Moment</h4>
+                <p class="short-description">AI detected high engagement moment</p>
+                <div class="short-features">
+                    <span class="feature-tag">
+                        <i class="fas fa-closed-captioning"></i>
+                        Captions
+                    </span>
+                    <span class="feature-tag">
+                        <i class="fas fa-crop"></i>
+                        9:16
+                    </span>
+                    <span class="feature-tag">
+                        <i class="fas fa-hashtag"></i>
+                        Tags
+                    </span>
+                </div>
+                <div class="short-actions">
+                    <button class="action-btn preview-btn">
+                        <i class="fas fa-play"></i>
+                        Preview
+                    </button>
+                    <button class="action-btn edit-btn">
+                        <i class="fas fa-edit"></i>
+                        Edit
+                    </button>
+                    <button class="action-btn download-btn">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
